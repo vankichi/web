@@ -16,6 +16,7 @@ jobs:
       - name: Check Release
         id: check_release
         run: |
+          echo "${GITHUB_REPOSITORY}"
           LAST_COMMIT_MESSAGE=`git log --pretty=format:%s -1`
           PR_NUM=`echo "$LAST_COMMIT_MESSAGE" | grep -o "#[[:digit:]]\+" | sed -e 's/#//' | head -1`
           if [ ! -z "${PR_NUM}" ] ; then \
@@ -24,6 +25,8 @@ jobs:
               echo "::set-output name=release::true"
             fi
           fi
+          cd public
+          echo "${GITHUB_REPOSITORY}"
       - name: Setup Hugo
         if: steps.check_release.outputs.release == 'true'
         uses: peaceiris/actions-hugo@v2
